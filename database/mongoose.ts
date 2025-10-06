@@ -41,4 +41,5 @@ const connectToDatabase = async () => {
     }
 
     console.log(`Connected to MongoDB in ${process.env.NODE_ENV} mode`);
+    return cache.conn;
 };
