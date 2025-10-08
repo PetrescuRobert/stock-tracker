@@ -18,7 +18,7 @@ if (!cache) {
     };
 }
 
-const connectToDatabase = async () => {
+export const connectToDatabase = async () => {
     if (!MONGO_URI) {
         throw new Error('MONGO_URI is not defined in the .env file');
     }
