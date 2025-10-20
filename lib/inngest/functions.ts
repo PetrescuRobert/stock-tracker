@@ -1,5 +1,6 @@
 import { inngest } from '@/lib/inngest/client';
 import { PERSONALIZED_WELCOME_EMAIL_PROMPT } from '@/lib/inngest/prompts';
+import { sendWelcomeEmail } from '@/lib/nodemailer';
 
 export const sendSignUpEmail = inngest.createFunction(
     { id: 'sign-up-email' },
@@ -34,6 +35,10 @@ export const sendSignUpEmail = inngest.createFunction(
                 'Thanks for joining Signalist!';
 
             // EMAIL SENDING LOGIC
+            const {
+                data: { email, name },
+            } = event;
+            return await sendWelcomeEmail({ name, email, intro: introText });
         });
 
         return {

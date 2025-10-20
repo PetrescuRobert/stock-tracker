@@ -11,8 +11,13 @@ import {
 } from '@/lib/constants';
 import { CountrySelectField } from '@/components/forms/CountrySelectField';
 import FooterLink from '@/components/forms/FooterLink';
+import { signUpWithEmail } from '@/lib/actions/auth.actions';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 const SignUpPage = () => {
+    const router = useRouter();
+
     const {
         register,
         handleSubmit,
@@ -33,9 +38,18 @@ const SignUpPage = () => {
 
     const onSubmit = async (data: SignUpFormData) => {
         try {
-            console.log(data);
+            const response = await signUpWithEmail(data);
+            if (response.success) {
+                router.push('/');
+            }
         } catch (error) {
             console.error(error);
+            toast.error('Sign up failed!', {
+                description:
+                    error instanceof Error
+                        ? error.message
+                        : 'Failed to create an account!',
+            });
         }
     };
 
@@ -129,7 +143,7 @@ const SignUpPage = () => {
                 </Button>
 
                 <FooterLink
-                    text={'Already have an account?'}
+                    text={'Already have an account? '}
                     linkText={'Sign in'}
                     href={'/sign-in'}
                 />
