@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import React from 'react'
+import React from 'react';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -8,21 +8,23 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { LogOut } from 'lucide-react'
-import NavItems from '@/components/NavItems'
+} from '@/components/ui/dropdown-menu';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { LogOut } from 'lucide-react';
+import NavItems from '@/components/NavItems';
+import { signOut } from '@/lib/actions/auth.actions';
 
-const UserDropdown = () => {
-    const router = useRouter()
+const UserDropdown = ({ user }: { user: User }) => {
+    const router = useRouter();
 
     const handleSignOut = async () => {
-        router.push('/sign-in')
-    }
+        await signOut();
+        router.push('/sign-in');
+    };
 
-    const user = { name: 'John', email: 'asd@gmail.com' }
+    // const user = { name: 'John', email: 'asd@gmail.com' };
 
     return (
         <DropdownMenu>
@@ -99,6 +101,6 @@ const UserDropdown = () => {
                 </nav>
             </DropdownMenuContent>
         </DropdownMenu>
-    )
-}
-export default UserDropdown
+    );
+};
+export default UserDropdown;

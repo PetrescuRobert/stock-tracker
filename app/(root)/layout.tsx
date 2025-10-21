@@ -1,12 +1,27 @@
-import { ReactNode } from 'react'
-import Header from '@/components/Header'
+import { ReactNode } from 'react';
+import Header from '@/components/Header';
+import { auth } from '@/lib/auth';
+import { redirect } from 'next/navigation';
+import { headers } from 'next/headers';
 
-const Layout = ({ children }: { children: ReactNode }) => {
+const Layout = async ({ children }: { children: ReactNode }) => {
+    const session = await auth.api.getSession({ headers: await headers() });
+
+    if (!session?.user) {
+        redirect('/sign-in');
+    }
+
+    const user = {
+        id: session.user.id,
+        email: session.user.email,
+        name: session.user.name,
+    };
+
     return (
         <main className={'min-h-screen text-gray-400'}>
-            <Header />
+            <Header user={user} />
             <div className={'container py-10'}>{children}</div>
         </main>
-    )
-}
-export default Layout
+    );
+};
+export default Layout;
