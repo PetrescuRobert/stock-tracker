@@ -4,8 +4,13 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import InputField from '@/components/forms/InputField';
 import FooterLink from '@/components/forms/FooterLink';
+import { signInWithEmail } from '@/lib/actions/auth.actions';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 const SignInPage = () => {
+    const router = useRouter();
+
     const {
         register,
         handleSubmit,
@@ -18,11 +23,20 @@ const SignInPage = () => {
         mode: 'onBlur',
     });
 
-    const onSubmit = async (data: { email: string; password: string }) => {
+    const onSubmit = async ({ email, password }: SignInFormData) => {
         try {
-            console.log(data);
+            const response = await signInWithEmail({ email, password });
+            if (response.success) {
+                router.push('/');
+            }
         } catch (error) {
             console.error(error);
+            toast.error('Sign in failed!', {
+                description:
+                    error instanceof Error
+                        ? error.message
+                        : 'Failed to log in!',
+            });
         }
     };
 
